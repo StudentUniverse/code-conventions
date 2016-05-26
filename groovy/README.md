@@ -24,7 +24,7 @@ JavaScript standards always use semicolons.
 //bad
 println('bla')
 //good
-prinln('bla');
+println('bla');
 ```
 **[⬆ back to top](#table-of-contents)**
 
@@ -33,20 +33,20 @@ In Groovy, the last expression evaluated in the body of a method can be returned
 Always be explicit.
 ```
 //bad
-String toString() { "su strong" }
+String toString() { 'su strong' }
 //good
-String toString() { return "su strong" }
+String toString() { return 'su strong' }
 ```
 
 **[⬆ back to top](#table-of-contents)**
 
 ## Def and Type
-Groovy does not require specifying types, but we do.
+Groovy does not require specifying types, but we do.  There should be a few exceptions when you really need to support a variable being multiple types (not preferred)
 ```
 //bad
-def name = "Jack""
+def name = 'Jack';
 //good
-String name = "Jack"
+String name = 'Jack';
 ```
 
 **[⬆ back to top](#table-of-contents)**
