@@ -7,6 +7,15 @@
   1. [Getters and Setters](#getters-and-setters)
   1. [Initializing benas](#initializing-beans)
   1. [With](#with)
+  1. [Strings](#strings)
+  1. [Package Reference](#package-reference)
+  1. [Conditionals](#conditionals)
+  1. [Elvis](#elvis)
+
+The [groovy language documentation](http://docs.groovy-lang.org/latest/html/documentation/index.htm) is a great place to learn
+about all the different features the language offers. However, not every feature should be used because it could have
+performance or maintenance draebacks and hence this document.
+  
 
 ## Semicolons Always
 Unlike Java semicolons do not cause compilation errors and are not required. However, to be consistent with our Java and
@@ -101,5 +110,104 @@ server.with {
 
 **[⬆ back to top](#table-of-contents)**
 
-inspired by
+## Strings
+If no interpolation is required use [single quote strings](http://docs.groovy-lang.org/latest/html/documentation/index.html#_single_quoted_string).
+```
+String stringWithSingleQuote = 'an escaped single quote: \' needs a backslash';
+String stringWithBackSlash = 'an escaped escape character: \\ needs a double backslash';
+```
+
+If interpolation is desired use [double quote strings](http://docs.groovy-lang.org/latest/html/documentation/index.html#_double_quoted_string).
+```
+//bad
+println("Name is " + fName + " " + lName);
+//good
+println("Name is ${fName} ${lName}");
+```
+
+For multiline strings use `\` or """.
+```
+String multi1 = "line 1\
+  line 2\
+  line 3";
+  
+String muli2 = """line1
+  line 2
+  line 3""";
+```
+
+**[⬆ back to top](#table-of-contents)**
+
+## Package Reference
+Alway import packages instead of using inline package name.
+This will help flag errors at compile time vs run time.
+```
+//bad
+com.su.util.TimeHelper timeHelper = new com.su.util.TimeHelper();
+
+//good
+import com.su.util.TimeHelper
+...
+TimeHelper timeHelper = new TimeHelper();
+```
+
+If there are name conflicts use an import alias.
+```
+import com.su.util.TimeHelper as SuTimeHelper
+import com.example.util.TimeHelper as ExampleTimeHelper
+```
+
+**[⬆ back to top](#table-of-contents)**
+
+## Conditionals
+
+Conditionals expect a boolean. Don't complicate by comparing booleans to a boolean, it runs the risk of using '=' instead of '=='.
+
+```
+///bad
+if(someBool === true){
+//easy to miss dangerous assignment if(someBool = true){
+
+///good
+if(someBool){
+```
+
+Always use brakets with conditionals.
+```
+//bad
+if(bla) println('something');
+//good
+if(bad){
+  println('something');
+}
+```
+
+**[⬆ back to top](#table-of-contents)**
+
+## Elvis
+Elvis operator can be useful. If anything evaluates to null the following operation will not be executed.
+```
+//bad
+if (order != null) {
+    if (order.getCustomer() != null) {
+        if (order.getCustomer().getAddress() != null) {
+            System.out.println(order.getCustomer().getAddress());
+        }
+    }
+}
+//good
+println order?.customer?.address
+```
+
+Can also be used for assignment.
+```
+//bad
+String result = result != null ? result : 'default';
+//good
+String result = result ?: 'default';
+```
+
+**[⬆ back to top](#table-of-contents)**
+
+Inspired by
 http://groovy-lang.org/style-guide.html#_return_keyword_optional
